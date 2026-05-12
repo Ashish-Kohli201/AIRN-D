@@ -1,0 +1,623 @@
+﻿<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AIRN'D - WHAT IS AIRN'D</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,700;1,300&family=Inter:ital,wght@0,300;0,400;0,500;0,700;1,400&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --near-black: #1A1814;
+      --raw-silver: #A8A39D;
+      --amber: #C4862B;
+      --paper: #F2EDE6;
+      --head: "Cormorant Garamond", "Times New Roman", serif;
+      --body: "Neue Haas Grotesk Text Pro", "Neue Haas Grotesk Display Pro", "Inter", "Arial", sans-serif;
+      --track: 0.2em;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; border-radius: 0; box-shadow: none; }
+    html, body { background: var(--near-black); color: var(--paper); font-family: var(--body); }
+
+    .site-nav {
+      position: fixed;
+      inset: 0 0 auto 0;
+      z-index: 60;
+      padding: 1.1rem 2.4rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      color: var(--paper);
+      background: transparent;
+      transition: background-color 0.4s ease-out, color 0.4s ease-out;
+    }
+    .site-nav.light { background: var(--paper); color: var(--near-black); }
+    .wordmark { font-family: var(--head); font-weight: 700; font-size: 24px; }
+    .nav-links { list-style: none; display: flex; gap: 1.2rem; }
+    .nav-links a {
+      color: inherit;
+      text-decoration: none;
+      text-transform: uppercase;
+      letter-spacing: var(--track);
+      font-size: 11px;
+      white-space: nowrap;
+      transition: letter-spacing 0.3s ease-out;
+    }
+    .nav-links a:hover { letter-spacing: calc(var(--track) + 1px); }
+
+    section { position: relative; width: 100%; overflow: clip; }
+    .paper { background: var(--paper); color: var(--near-black); }
+    .paper::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      opacity: 0.18;
+      background: rgba(0,0,0,0.05);
+      filter: url(#paperGrain);
+      mix-blend-mode: multiply;
+    }
+
+    .caps { text-transform: uppercase; letter-spacing: var(--track); font-size: 11px; }
+
+    .opening {
+      min-height: 100vh;
+      background: var(--near-black);
+      display: grid;
+      place-items: center;
+      text-align: center;
+      padding: 18vh 1.25rem 10vh;
+    }
+    .opening h1 {
+      font-family: var(--head);
+      font-size: clamp(2.2rem, 8vw, 64px);
+      line-height: 1.12;
+      opacity: 0;
+      transform: translateY(40px);
+      transition: opacity 1s ease-out, transform 1s ease-out;
+    }
+    .opening h1:first-child { font-weight: 300; }
+    .opening h1:last-of-type { font-weight: 700; }
+    .opening h1.show { opacity: 1; transform: translateY(0); }
+    .opening-meta {
+      margin-top: 1.8rem;
+      color: var(--raw-silver);
+      opacity: 0;
+      transition: opacity 0.8s ease-out;
+      transition-delay: 2s;
+    }
+    .opening-meta.show { opacity: 1; }
+
+    .hero-arrow {
+      position: absolute;
+      bottom: 2.2rem;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 40px;
+      height: 56px;
+      animation: breathe 2s ease-out infinite;
+      transform-origin: center;
+    }
+    @keyframes breathe {
+      0%, 100% { transform: translateX(-50%) scale(1); }
+      50% { transform: translateX(-50%) scale(1.05); }
+    }
+
+    .inventory { padding: clamp(3.5rem, 8vw, 7rem) 1.25rem; }
+    .inventory-wrap { max-width: 1220px; margin: 0 auto; position: relative; z-index: 1; }
+    .inventory-title { color: var(--near-black); }
+    .rule { margin-top: 1rem; border-top: 0.5px solid var(--near-black); }
+
+    .table-head,
+    .table-row {
+      display: grid;
+      grid-template-columns: 2.1fr 2fr 1.7fr 0.9fr 1.1fr;
+      gap: 1rem;
+      align-items: center;
+    }
+    .table-head {
+      padding: 1rem 0;
+      color: var(--near-black);
+      font-size: 11px;
+      letter-spacing: var(--track);
+      text-transform: uppercase;
+      border-bottom: 0.5px solid var(--near-black);
+    }
+    .h-center { text-align: center; }
+    .h-right { text-align: right; }
+
+    .row-wrap { border-bottom: 0.5px solid var(--near-black); }
+    .table-row {
+      width: 100%;
+      border: 0;
+      background: transparent;
+      padding: 1.05rem 0;
+      text-align: left;
+      cursor: pointer;
+      color: var(--near-black);
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.7s ease-out, transform 0.7s ease-out, background-color 0.4s ease-out, color 0.4s ease-out;
+    }
+    .table-row.show { opacity: 1; transform: translateY(0); }
+    .table-row:hover,
+    .row-wrap.open .table-row {
+      background: var(--near-black);
+      color: var(--paper);
+    }
+
+    .c-name {
+      font-family: var(--head);
+      font-size: clamp(1.25rem, 3.5vw, 28px);
+      font-weight: 700;
+      transition: color 0.4s ease-out;
+      padding-left: 0.4rem;
+    }
+    .table-row:hover .c-name,
+    .row-wrap.open .table-row .c-name { color: var(--amber); }
+
+    .c-what {
+      font-style: italic;
+      color: var(--raw-silver);
+      text-align: center;
+      font-size: 15px;
+      transition: color 0.4s ease-out;
+    }
+    .c-for { text-align: center; font-size: 13px; }
+    .c-price { text-align: right; font-family: var(--head); font-size: clamp(1.2rem, 3vw, 24px); }
+
+    .add-btn {
+      justify-self: end;
+      background: transparent;
+      border: 0.5px solid currentColor;
+      color: inherit;
+      padding: 0.65rem 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: var(--track);
+      font-size: 11px;
+      line-height: 1;
+    }
+
+    .expand-panel {
+      max-height: 0;
+      overflow: hidden;
+      background: var(--near-black);
+      transition: max-height 0.6s ease-out;
+    }
+    .row-wrap.open .expand-panel { max-height: 480px; }
+
+    .panel-inner {
+      min-height: 480px;
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 1.5rem;
+      padding: 2rem 1rem;
+      align-items: center;
+    }
+    .philosophy {
+      font-family: var(--head);
+      font-style: italic;
+      font-size: clamp(1.55rem, 3.8vw, 32px);
+      line-height: 1.6;
+      color: var(--paper);
+    }
+    .visual {
+      display: grid;
+      place-items: center;
+    }
+    .visual-box {
+      width: min(100%, 240px);
+      aspect-ratio: 2 / 3;
+      background: #2A2520;
+      display: grid;
+      place-items: center;
+      color: var(--raw-silver);
+      font-family: var(--head);
+      font-size: 18px;
+      letter-spacing: 0.02em;
+    }
+    .desc {
+      color: var(--raw-silver);
+      font-size: 15px;
+      line-height: 1.9;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+    .not-for { color: var(--amber); text-transform: uppercase; letter-spacing: var(--track); font-size: 11px; margin-top: auto; }
+
+    .mirror {
+      min-height: 100vh;
+      background: var(--near-black);
+      display: grid;
+      place-items: center;
+      text-align: center;
+      padding: 10vh 1.25rem;
+    }
+    .mirror-wrap { max-width: 560px; }
+    .reveal {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+    }
+    .reveal.show { opacity: 1; transform: translateY(0); }
+    .mirror-tag { color: var(--raw-silver); }
+    .mirror-line {
+      margin-top: 1rem;
+      font-family: var(--head);
+      font-style: italic;
+      font-size: clamp(1.5rem, 5vw, 36px);
+      line-height: 1.8;
+      color: var(--paper);
+    }
+    .mirror-copy {
+      margin-top: 1.2rem;
+      font-size: clamp(1rem, 2.7vw, 17px);
+      line-height: 2;
+      color: var(--raw-silver);
+    }
+    .mirror-man {
+      margin-top: 1.6rem;
+      font-family: var(--head);
+      font-size: clamp(2rem, 8vw, 56px);
+      font-weight: 700;
+      color: var(--paper);
+      line-height: 1.1;
+    }
+    .mirror-welcome {
+      margin-top: 0.5rem;
+      font-family: var(--head);
+      font-size: clamp(2rem, 8vw, 56px);
+      font-style: italic;
+      color: var(--amber);
+      line-height: 1.1;
+    }
+
+    .full-works { display: grid; grid-template-columns: 1fr 1fr; }
+    .fw-left {
+      background: var(--near-black);
+      display: grid;
+      place-items: center;
+      padding: 4rem 1.25rem;
+      text-align: center;
+    }
+    .fw-square {
+      width: 320px;
+      max-width: 86vw;
+      aspect-ratio: 1 / 1;
+      background: #2A2520;
+      display: grid;
+      place-items: center;
+      color: var(--raw-silver);
+      font-family: var(--head);
+      font-size: clamp(1.8rem, 6vw, 32px);
+    }
+    .fw-caption { margin-top: 1rem; color: var(--raw-silver); }
+
+    .fw-right {
+      background: var(--paper);
+      color: var(--near-black);
+      padding: clamp(2.2rem, 6vw, 4rem);
+      position: relative;
+      z-index: 1;
+    }
+    .fw-kicker { color: var(--raw-silver); }
+    .fw-title {
+      margin-top: 0.7rem;
+      font-family: var(--head);
+      font-size: clamp(2rem, 7vw, 56px);
+      font-weight: 300;
+      line-height: 1.1;
+    }
+    .fw-title em { display: block; font-style: italic; font-weight: 300; }
+    .fw-copy {
+      margin-top: 2rem;
+      color: var(--raw-silver);
+      font-size: 15px;
+      line-height: 1.9;
+      text-transform: uppercase;
+    }
+    .fw-price {
+      margin-top: 1.4rem;
+      font-family: var(--head);
+      font-size: clamp(2rem, 7vw, 48px);
+      font-weight: 700;
+      color: var(--near-black);
+    }
+    .fw-add {
+      margin-top: 1.4rem;
+      width: 100%;
+      background: transparent;
+      border: 0.5px solid var(--near-black);
+      color: var(--near-black);
+      padding: 1rem;
+      text-transform: uppercase;
+      letter-spacing: var(--track);
+      font-size: 12px;
+      transition: background-color 0.3s ease-out, color 0.3s ease-out;
+    }
+    .fw-add:hover { background: var(--near-black); color: var(--paper); }
+
+    .footer-last {
+      background: var(--near-black);
+      text-align: center;
+      padding: 3.8rem 1.25rem 4.8rem;
+      display: grid;
+      gap: 1rem;
+      place-items: center;
+    }
+    .footer-last p { color: var(--raw-silver); }
+    .footer-link {
+      color: var(--amber);
+      text-decoration: none;
+      text-transform: uppercase;
+      letter-spacing: var(--track);
+      font-size: 11px;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.55rem;
+      transition: letter-spacing 0.3s ease-out;
+    }
+    .footer-link:hover { letter-spacing: calc(var(--track) + 1px); }
+
+    @media (max-width: 1080px) {
+      .table-head,
+      .table-row { grid-template-columns: 1.6fr 1.8fr 1.4fr 0.9fr 1fr; }
+      .panel-inner { grid-template-columns: 1fr; min-height: auto; }
+      .row-wrap.open .expand-panel { max-height: 1100px; }
+    }
+
+    @media (max-width: 900px) {
+      .site-nav { padding: 0.9rem 1rem; }
+      .nav-links { gap: 0.7rem; }
+      .full-works { grid-template-columns: 1fr; }
+      .fw-left { padding: 3rem 1rem; }
+    }
+
+    @media (max-width: 760px) {
+      .site-nav { flex-direction: column; gap: 0.55rem; }
+      .nav-links { flex-wrap: wrap; justify-content: center; }
+      .table-head { display: none; }
+      .table-row {
+        grid-template-columns: 1fr;
+        gap: 0.5rem;
+        padding: 1rem 0.4rem;
+      }
+      .c-what, .c-for, .c-price, .add-btn { text-align: left; justify-self: start; }
+      .c-name { padding-left: 0; }
+    }
+  </style>
+</head>
+<body>
+  <svg width="0" height="0" aria-hidden="true" focusable="false" style="position:absolute;left:-9999px;overflow:hidden;">
+    <filter id="paperGrain">
+      <feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="2" stitchTiles="stitch" />
+      <feColorMatrix type="saturate" values="0" />
+      <feComponentTransfer>
+        <feFuncA type="table" tableValues="0 0.12" />
+      </feComponentTransfer>
+    </filter>
+  </svg>
+
+  <nav class="site-nav" id="siteNav">
+    <a class="wordmark" href="index.html" style="color:inherit;text-decoration:none;">AIRN'D</a>
+    <ul class="nav-links">
+      <li><a href="why-we-started.html">WHY WE STARTED</a></li>
+      <li><a href="what-is-airnd.html">WHAT IS AIRN'D</a></li>
+      <li><a href="how-we-spend-year-one.html">INVESTOR RELATIONS</a></li>
+      <li><a href="index.html">IF YOU'RE READING THIS</a></li>
+    </ul>
+  </nav>
+
+  <section class="opening" id="opening">
+    <div>
+      <h1 id="openLine1">The brands saw a problem.</h1>
+      <h1 id="openLine2">We saw a man.</h1>
+      <p class="opening-meta caps" id="openingMeta">FIVE PRODUCTS. BUILT FROM ONE POSITION.</p>
+    </div>
+    <svg class="hero-arrow" viewBox="0 0 42 58" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <path d="M20.8 4.5V46.2" stroke="#F2EDE6" stroke-width="1.4" stroke-linecap="round"/>
+      <path d="M9.5 35.8C14.4 39.5 17.7 43 20.8 46.2" stroke="#F2EDE6" stroke-width="1.4" stroke-linecap="round"/>
+      <path d="M32.1 35.8C27.2 39.5 23.9 43 20.8 46.2" stroke="#F2EDE6" stroke-width="1.4" stroke-linecap="round"/>
+    </svg>
+  </section>
+
+  <section class="inventory paper" id="inventory">
+    <div class="inventory-wrap">
+      <p class="inventory-title caps">THE RANGE</p>
+      <div class="rule"></div>
+      <div class="table-head">
+        <p>NAME</p>
+        <p class="h-center">WHAT IT IS</p>
+        <p class="h-center">FOR</p>
+        <p class="h-right">PRICE</p>
+        <p class="h-right">ADD</p>
+      </div>
+      <div id="rowsHost"></div>
+    </div>
+  </section>
+
+  <section class="mirror" id="mirror">
+    <div class="mirror-wrap">
+      <p class="mirror-tag caps reveal" data-delay="0">THE MIRROR TEST</p>
+      <p class="mirror-line reveal" data-delay="800">Look in your mirror. Honestly.</p>
+      <p class="mirror-copy reveal" data-delay="1200">If you see a problem - we are not your brand. There are 47 others that will happily sell you a solution.</p>
+      <p class="mirror-man reveal" data-delay="2400">If you see a man -</p>
+      <p class="mirror-welcome reveal" data-delay="3000">welcome.</p>
+    </div>
+  </section>
+
+  <section class="full-works paper" id="fullWorks">
+    <div class="fw-left">
+      <div>
+        <div class="fw-square">AIRN'D</div>
+        <p class="fw-caption caps">MATTE BLACK. EMBOSSED. NO LABEL.</p>
+      </div>
+    </div>
+    <div class="fw-right">
+      <p class="fw-kicker caps">THE FULL WORKS</p>
+      <h2 class="fw-title">Everything you need.<em>Nothing you do not.</em></h2>
+      <p class="fw-copy">THE SILVER. THE GRAIN. THE WEIGHT. THE SALT.<br />One box. Matte black. Delivered once.<br />Then again every 30 days if you want.</p>
+      <p class="fw-price">₹2,799</p>
+      <button class="fw-add" type="button">ADD TO KIT</button>
+    </div>
+  </section>
+
+  <footer class="footer-last">
+    <p class="caps">THAT IS WHAT WE ARE.</p>
+    <a class="footer-link" href="how-we-spend-year-one.html">
+      <svg viewBox="0 0 46 18" width="46" height="18" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <path d="M2 9H40" stroke="#C4862B" stroke-width="1.4" stroke-linecap="round"/>
+        <path d="M31 2.3C35 4.8 37.7 6.9 40 9" stroke="#C4862B" stroke-width="1.4" stroke-linecap="round"/>
+        <path d="M31 15.7C35 13.2 37.7 11.1 40 9" stroke="#C4862B" stroke-width="1.4" stroke-linecap="round"/>
+      </svg>
+      <span>HOW WE SPEND YEAR ONE</span>
+    </a>
+  </footer>
+
+  <script>
+    const nav = document.getElementById('siteNav');
+    const opening = document.getElementById('opening');
+
+    const navObserver = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        nav.classList.toggle('light', !entry.isIntersecting);
+      });
+    }, { threshold: 0.2 });
+    navObserver.observe(opening);
+
+    const productData = [
+      {
+        name: 'THE SILVER',
+        what: 'toning wash for grey and salt-and-pepper hair',
+        for: 'the man whose grey came in and stayed',
+        price: '₹899',
+        philosophy: 'Grey is not a stage you pass through. It is a place you arrive.',
+        desc: 'A toning wash designed to clean without stripping character. It takes brass down. Leaves silver clear. Keeps salt-and-pepper honest.'
+      },
+      {
+        name: 'THE GRAIN',
+        what: 'matte texture paste for short thinning or buzzed hair',
+        for: 'the man who made less into a choice',
+        price: '₹849',
+        philosophy: 'Less is not a problem to solve. It is a canvas to work with.',
+        desc: 'A matte texture paste for control without stiffness. Built for short cuts, thinning density, and deliberate shape that does not look engineered.'
+      },
+      {
+        name: 'THE WEIGHT',
+        what: 'scalp and hair oil that works with your natural oil not against it',
+        for: 'the man who stopped fighting his texture',
+        price: '₹799',
+        philosophy: 'Your hair knows what it is doing. Always has.',
+        desc: 'A scalp and hair oil that works with your natural oil profile. Softens, settles, and supports texture instead of resetting it every morning.'
+      },
+      {
+        name: 'THE SALT',
+        what: 'sea salt spray for definition and movement',
+        for: 'the man who wants his hair to look like he has been somewhere',
+        price: '₹749',
+        philosophy: 'Texture is not an accident. It is evidence.',
+        desc: 'A sea salt spray for movement and definition. Gives hold without shine and shape without heaviness. Dry finish. Lived-in surface.'
+      },
+      {
+        name: 'THE FULL WORKS',
+        what: 'all four in one matte black box',
+        for: 'the man who is done thinking about it',
+        price: '₹2,799',
+        philosophy: 'Everything you need. Nothing you do not.',
+        desc: 'All four products, one box, one cadence. Built to remove decision fatigue and keep the ritual consistent without making it a project.'
+      }
+    ];
+
+    const rowsHost = document.getElementById('rowsHost');
+    productData.forEach((item) => {
+      const wrap = document.createElement('div');
+      wrap.className = 'row-wrap';
+      wrap.innerHTML = `
+        <button class="table-row" type="button" aria-expanded="false">
+          <span class="c-name">${item.name}</span>
+          <span class="c-what">${item.what}</span>
+          <span class="c-for">${item.for}</span>
+          <span class="c-price">${item.price}</span>
+          <span class="add-btn">ADD TO KIT</span>
+        </button>
+        <div class="expand-panel">
+          <div class="panel-inner">
+            <p class="philosophy">${item.philosophy}</p>
+            <div class="visual"><div class="visual-box">AIRN'D</div></div>
+            <div class="desc">
+              <p>${item.desc}</p>
+              <p class="not-for">NOT FOR MEN LOOKING FOR A TREATMENT.</p>
+            </div>
+          </div>
+        </div>
+      `;
+      rowsHost.appendChild(wrap);
+    });
+
+    const rowWraps = [...document.querySelectorAll('.row-wrap')];
+    rowWraps.forEach((wrap) => {
+      const rowBtn = wrap.querySelector('.table-row');
+      rowBtn.addEventListener('click', () => {
+        const isOpen = wrap.classList.contains('open');
+        rowWraps.forEach((w) => {
+          w.classList.remove('open');
+          w.querySelector('.table-row').setAttribute('aria-expanded', 'false');
+        });
+        if (!isOpen) {
+          wrap.classList.add('open');
+          rowBtn.setAttribute('aria-expanded', 'true');
+        }
+      });
+    });
+
+    const openLine1 = document.getElementById('openLine1');
+    const openLine2 = document.getElementById('openLine2');
+    const openingMeta = document.getElementById('openingMeta');
+    let openingRun = false;
+    const openingObserver = new IntersectionObserver((entries, obs) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting || openingRun) return;
+        openingRun = true;
+        openLine1.classList.add('show');
+        setTimeout(() => openLine2.classList.add('show'), 600);
+        setTimeout(() => openingMeta.classList.add('show'), 2000);
+        obs.unobserve(entry.target);
+      });
+    }, { threshold: 0.45 });
+    openingObserver.observe(opening);
+
+    const tableRows = [...document.querySelectorAll('.table-row')];
+    const rowObserver = new IntersectionObserver((entries, obs) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        const idx = Number(entry.target.dataset.idx || 0);
+        setTimeout(() => entry.target.classList.add('show'), idx * 120);
+        obs.unobserve(entry.target);
+      });
+    }, { threshold: 0.2, rootMargin: '0px 0px -8% 0px' });
+
+    tableRows.forEach((row, idx) => {
+      row.dataset.idx = String(idx);
+      rowObserver.observe(row);
+    });
+
+    const mirror = document.getElementById('mirror');
+    const revealEls = [...mirror.querySelectorAll('.reveal')];
+    const mirrorObserver = new IntersectionObserver((entries, obs) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        revealEls.forEach((el) => {
+          const d = Number(el.dataset.delay || 0);
+          setTimeout(() => el.classList.add('show'), d);
+        });
+        obs.unobserve(entry.target);
+      });
+    }, { threshold: 0.45 });
+    mirrorObserver.observe(mirror);
+  </script>
+</body>
+</html>
+

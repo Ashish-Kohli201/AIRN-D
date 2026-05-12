@@ -1,0 +1,490 @@
+﻿<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AIRN'D - WHY WE STARTED</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,700;1,300&family=Inter:wght@300;400;500;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --near-black: #1A1814;
+      --raw-silver: #A8A39D;
+      --amber: #C4862B;
+      --paper: #F2EDE6;
+      --head: "Cormorant Garamond", "Times New Roman", serif;
+      --body: "Neue Haas Grotesk Text Pro", "Neue Haas Grotesk Display Pro", "Inter", "Arial", sans-serif;
+      --label-track: 0.2em;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; border-radius: 0; }
+    html, body { background: var(--near-black); color: var(--paper); font-family: var(--body); }
+
+    .site-nav {
+      position: fixed;
+      inset: 0 0 auto 0;
+      z-index: 50;
+      padding: 1.1rem 2.4rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      color: var(--paper);
+      background: transparent;
+      transition: background-color 0.4s ease-out, color 0.4s ease-out;
+    }
+    .site-nav.light { background: var(--paper); color: var(--near-black); }
+    .wordmark { font-family: var(--head); font-weight: 700; font-size: 24px; }
+    .nav-links { list-style: none; display: flex; gap: 1.2rem; }
+    .nav-links a {
+      color: inherit;
+      text-decoration: none;
+      text-transform: uppercase;
+      letter-spacing: var(--label-track);
+      font-size: 11px;
+      transition: letter-spacing 0.3s ease-out;
+      white-space: nowrap;
+    }
+    .nav-links a:hover { letter-spacing: calc(var(--label-track) + 1px); }
+
+    section { position: relative; width: 100%; overflow: clip; }
+    .paper { background: var(--paper); color: var(--near-black); }
+    .paper::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      opacity: 0.18;
+      background: rgba(0,0,0,0.05);
+      filter: url(#paperGrain);
+      mix-blend-mode: multiply;
+    }
+
+    .caps { text-transform: uppercase; letter-spacing: var(--label-track); font-size: 11px; }
+
+    .number-open {
+      min-height: 100vh;
+      background: var(--near-black);
+      display: grid;
+      place-items: center;
+      padding: 18vh 1.25rem 10vh;
+      text-align: center;
+    }
+    .numbers-wrap { max-width: 980px; width: 100%; }
+    .numbers-row {
+      display: grid;
+      grid-template-columns: 1fr 1px 1fr;
+      align-items: stretch;
+      gap: clamp(1rem, 6vw, 5rem);
+    }
+    .vrule { width: 0.5px; background: var(--raw-silver); justify-self: center; }
+    .num { font-family: var(--head); font-size: clamp(4rem, 14vw, 120px); line-height: 0.95; }
+    .num.left { font-weight: 700; color: var(--paper); }
+    .num.right { font-weight: 300; color: var(--amber); }
+    .num-label { margin-top: 0.8rem; color: var(--raw-silver); }
+    .counted { margin-top: clamp(2.8rem, 8vw, 5rem); color: var(--raw-silver); font-size: 12px; letter-spacing: 0.2em; text-transform: uppercase; }
+    .open-lines { margin-top: 2.2rem; }
+    .open-line {
+      font-family: var(--head);
+      font-size: clamp(1.5rem, 4.5vw, 32px);
+      line-height: 1.2;
+      min-height: 1.3em;
+      color: var(--paper);
+    }
+    .open-line.second { font-style: normal; font-weight: 700; }
+    .open-line.first { font-style: italic; font-weight: 300; }
+    .word { opacity: 0; transition: opacity 0.45s ease-out; }
+    .word.show { opacity: 1; }
+
+    .letter { padding: clamp(4rem, 9vw, 8rem) 1.25rem; }
+    .letter-wrap { max-width: 680px; margin: 0 auto; display: grid; gap: 1.5rem; }
+    .letter-block {
+      font-size: clamp(1rem, 2.8vw, 17px);
+      line-height: 1.9;
+      color: var(--near-black);
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.7s ease-out, transform 0.7s ease-out;
+      white-space: pre-line;
+    }
+    .letter-block.show { opacity: 1; transform: translateY(0); }
+    .pull {
+      font-family: var(--head);
+      font-style: italic;
+      font-size: clamp(1.25rem, 4.2vw, 28px);
+      line-height: 1.5;
+      border-left: 2px solid var(--amber);
+      padding-left: 24px;
+    }
+
+    .map-sec {
+      background: var(--near-black);
+      padding: clamp(4rem, 9vw, 8rem) 1.25rem;
+      text-align: center;
+    }
+    .map-head { color: var(--raw-silver); }
+    .map-sub {
+      margin-top: 1.2rem;
+      font-family: var(--head);
+      font-size: clamp(1.5rem, 5vw, 36px);
+      color: var(--paper);
+      line-height: 1.2;
+    }
+    .q {
+      margin-top: 0.8rem;
+      font-family: var(--head);
+      font-style: italic;
+      color: var(--raw-silver);
+      font-size: clamp(1.15rem, 3.8vw, 24px);
+      line-height: 1.35;
+    }
+    .map-wrap { max-width: 980px; margin: 2.4rem auto 0; }
+    .map-svg { width: 100%; height: auto; display: block; }
+    .map-caption {
+      margin-top: 2.2rem;
+      font-family: var(--head);
+      font-style: italic;
+      font-size: clamp(1.45rem, 4.8vw, 32px);
+      color: var(--paper);
+      line-height: 1.25;
+    }
+
+    .airnd-dot { transform-origin: 720px 120px; animation: airndPulse 2s ease-out infinite; }
+    @keyframes airndPulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.3); }
+    }
+
+    .search { padding: clamp(4rem, 9vw, 8rem) 1.25rem; text-align: center; }
+    .search-title { color: var(--near-black); }
+    .chart-wrap { max-width: 920px; margin: 2.2rem auto 0; }
+    .chart-svg { width: 100%; height: auto; display: block; }
+    .search-copy {
+      margin-top: 2rem;
+      font-family: var(--head);
+      font-size: clamp(1.5rem, 5vw, 36px);
+      color: var(--near-black);
+      line-height: 1.2;
+    }
+    .search-copy em { font-style: italic; font-weight: 300; }
+
+    .close-sec {
+      min-height: 100vh;
+      background: var(--near-black);
+      display: grid;
+      place-items: center;
+      padding: 10vh 1.25rem;
+      text-align: center;
+    }
+    .close-wrap { max-width: 900px; }
+    .close-line {
+      font-size: clamp(1rem, 2.7vw, 17px);
+      color: var(--raw-silver);
+      line-height: 2;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.7s ease-out, transform 0.7s ease-out;
+    }
+    .close-line.show { opacity: 1; transform: translateY(0); }
+    .close-main {
+      margin-top: 2rem;
+      font-family: var(--head);
+      font-size: clamp(2rem, 8vw, 56px);
+      color: var(--paper);
+      opacity: 0;
+      transform: translateY(25px);
+      transition: opacity 0.9s ease-out, transform 0.9s ease-out;
+    }
+    .close-sub {
+      margin-top: 0.8rem;
+      font-family: var(--head);
+      font-style: italic;
+      font-size: clamp(1.4rem, 5vw, 32px);
+      color: var(--amber);
+      opacity: 0;
+      transform: translateY(25px);
+      transition: opacity 0.9s ease-out, transform 0.9s ease-out;
+    }
+    .close-tag {
+      margin-top: 2rem;
+      text-transform: uppercase;
+      letter-spacing: var(--label-track);
+      font-size: 11px;
+      color: var(--raw-silver);
+      opacity: 0;
+      transform: translateY(25px);
+      transition: opacity 0.9s ease-out, transform 0.9s ease-out;
+      line-height: 1.9;
+    }
+    .footer-last {
+      background: var(--near-black);
+      text-align: center;
+      padding: 3.8rem 1.25rem 4.8rem;
+      display: grid;
+      gap: 1rem;
+      place-items: center;
+    }
+    .footer-last p { color: var(--raw-silver); }
+    .footer-link {
+      color: var(--amber);
+      text-decoration: none;
+      text-transform: uppercase;
+      letter-spacing: var(--label-track);
+      font-size: 11px;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.55rem;
+      transition: letter-spacing 0.3s ease-out;
+    }
+    .footer-link:hover { letter-spacing: calc(var(--label-track) + 1px); }
+
+    .hidden-start { opacity: 0; }
+    .show-block { opacity: 1; transition: opacity 0.8s ease-out; }
+
+    @media (max-width: 980px) {
+      .site-nav { padding: 0.9rem 1rem; }
+      .nav-links { gap: 0.7rem; }
+    }
+
+    @media (max-width: 760px) {
+      .site-nav { flex-direction: column; gap: 0.55rem; }
+      .nav-links { flex-wrap: wrap; justify-content: center; }
+      .numbers-row { grid-template-columns: 1fr; gap: 2rem; }
+      .vrule { width: 100%; height: 0.5px; }
+    }
+  </style>
+</head>
+<body>
+  <svg width="0" height="0" aria-hidden="true" focusable="false" style="position:absolute;left:-9999px;overflow:hidden;">
+    <filter id="paperGrain">
+      <feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="2" stitchTiles="stitch" />
+      <feColorMatrix type="saturate" values="0" />
+      <feComponentTransfer>
+        <feFuncA type="table" tableValues="0 0.12" />
+      </feComponentTransfer>
+    </filter>
+  </svg>
+
+  <nav class="site-nav" id="siteNav">
+    <a class="wordmark" href="index.html" style="color:inherit;text-decoration:none;">AIRN'D</a>
+    <ul class="nav-links">
+      <li><a href="why-we-started.html">WHY WE STARTED</a></li>
+      <li><a href="what-is-airnd.html">WHAT IS AIRN'D</a></li>
+      <li><a href="how-we-spend-year-one.html">INVESTOR RELATIONS</a></li>
+      <li><a href="index.html">IF YOU'RE READING THIS</a></li>
+    </ul>
+  </nav>
+
+  <section class="number-open" id="numberOpen">
+    <div class="numbers-wrap">
+      <div class="numbers-row">
+        <div>
+          <p class="num left">487</p>
+          <p class="num-label caps">FIX IT</p>
+        </div>
+        <div class="vrule"></div>
+        <div>
+          <p class="num right">9</p>
+          <p class="num-label caps">STYLE IT</p>
+        </div>
+      </div>
+      <p class="counted">WORDS COUNTED ACROSS THE TOP 10 MEN'S GROOMING BRAND HOMEPAGES IN INDIA</p>
+      <div class="open-lines hidden-start" id="openLines">
+        <p class="open-line first" id="openLine1"></p>
+        <p class="open-line second" id="openLine2"></p>
+      </div>
+    </div>
+  </section>
+
+  <section class="letter paper" id="letter">
+    <div class="letter-wrap" id="letterWrap">
+      <p class="letter-block">I am 19.
+I do not have grey hair. I do not have a thinning temple. I have not lived through any of it.
+But the men I love have.</p>
+      <p class="letter-block pull">My father has been dyeing his hair since he was 38. I asked him once why. He looked at me like it was a strange question. You just do, he said. Everyone does.</p>
+      <p class="letter-block">My cousin Arjun is 31. Started noticing his hairline last year. He bought three different shampoos in six months. None of them worked.</p>
+      <p class="letter-block pull">yaar I just want it to stop. I do not even care how it looks anymore. I just want it to stop.</p>
+      <p class="letter-block">My girlfriend's father is 54. Full head of silver hair. Looks like a film director. Does not use a single grooming product because in his words:</p>
+      <p class="letter-block pull">Those things are for people with problems. I do not have a problem.</p>
+      <p class="letter-block">He is the only one who got it right. And he got there by accident.
+My brother Karan, 27, showed me a brand he had ordered from. The website had the words combat, fight, prevent, and restore on the homepage. I counted. He did not find that strange. None of them do.
+That is when I started paying attention.</p>
+    </div>
+  </section>
+
+  <section class="map-sec" id="mapSec">
+    <p class="map-head caps">I LOOKED AT EVERY MAJOR MEN'S GROOMING BRAND IN INDIA. ALL OF THEM.</p>
+    <p class="map-sub">I put them on a map. Not a business school map. Just two questions.</p>
+    <p class="q">Are they for anyone or made for someone specific?</p>
+    <p class="q">Are they fighting your hair or working with it?</p>
+
+    <div class="map-wrap">
+      <svg class="map-svg" viewBox="0 0 900 520" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Brand positioning map">
+        <rect x="0" y="0" width="900" height="520" fill="#1A1814" />
+        <line x1="80" y1="430" x2="820" y2="430" stroke="#A8A39D" stroke-width="0.5" />
+        <line x1="80" y1="430" x2="80" y2="80" stroke="#A8A39D" stroke-width="0.5" />
+        <line x1="450" y1="80" x2="450" y2="430" stroke="#A8A39D" stroke-width="0.5" />
+        <line x1="80" y1="255" x2="820" y2="255" stroke="#A8A39D" stroke-width="0.5" />
+
+        <text x="80" y="460" fill="#A8A39D" font-size="11" letter-spacing="0.2em" font-family="Inter, Arial, sans-serif">FOR ANYONE</text>
+        <text x="640" y="460" fill="#A8A39D" font-size="11" letter-spacing="0.2em" font-family="Inter, Arial, sans-serif">MADE FOR SOMEONE</text>
+        <text x="20" y="430" fill="#A8A39D" font-size="11" letter-spacing="0.2em" font-family="Inter, Arial, sans-serif" transform="rotate(-90 20 430)">FIGHTING YOUR HAIR</text>
+        <text x="20" y="220" fill="#A8A39D" font-size="11" letter-spacing="0.2em" font-family="Inter, Arial, sans-serif" transform="rotate(-90 20 220)">WORKING WITH IT</text>
+
+        <g fill="#A8A39D" font-size="11" font-family="Inter, Arial, sans-serif">
+          <circle cx="170" cy="360" r="3" fill="#A8A39D" /><text x="180" y="364">Kesh King</text>
+          <circle cx="220" cy="390" r="3" fill="#A8A39D" /><text x="230" y="394">Parachute Advansed</text>
+          <circle cx="250" cy="340" r="3" fill="#A8A39D" /><text x="260" y="344">Himalaya Men</text>
+          <circle cx="320" cy="375" r="3" fill="#A8A39D" /><text x="330" y="379">Nivea Men</text>
+
+          <circle cx="520" cy="360" r="3" fill="#A8A39D" /><text x="530" y="364">Beardo</text>
+          <circle cx="560" cy="390" r="3" fill="#A8A39D" /><text x="570" y="394">Bombay Shaving Company</text>
+          <circle cx="610" cy="345" r="3" fill="#A8A39D" /><text x="620" y="349">The Man Company</text>
+          <circle cx="700" cy="380" r="3" fill="#A8A39D" /><text x="710" y="384">Traya</text>
+          <circle cx="660" cy="330" r="3" fill="#A8A39D" /><text x="670" y="334">Vedix</text>
+        </g>
+
+        <g id="airndMark" style="opacity:0;">
+          <circle class="airnd-dot" cx="720" cy="120" r="6" fill="#C4862B" />
+          <text x="734" y="124" fill="#C4862B" font-family="Cormorant Garamond, serif" font-size="14">AIRN'D</text>
+        </g>
+      </svg>
+    </div>
+
+    <p class="map-caption">The top half. Completely empty.<br />That is not a gap I invented. That is a map. You can see it.</p>
+  </section>
+
+  <section class="search paper" id="searchSec">
+    <p class="search-title caps">THIS IS THE DIRECTION WE BELIEVE IN. INDIA. OVER FIVE YEARS.</p>
+    <div class="chart-wrap">
+      <svg class="chart-svg" viewBox="0 0 900 360" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Trend comparison chart">
+        <rect x="0" y="0" width="900" height="360" fill="#F2EDE6" />
+        <path d="M60 110 C180 130 280 170 410 180 C520 188 640 225 840 280" fill="none" stroke="#A8A39D" stroke-width="2" />
+        <path d="M60 275 C190 250 300 215 410 180 C530 145 650 120 840 80" fill="none" stroke="#C4862B" stroke-width="2" />
+        <text x="850" y="283" text-anchor="end" fill="#A8A39D" font-size="11" letter-spacing="0.2em" font-family="Inter, Arial, sans-serif">HOW TO HIDE GREY HAIR</text>
+        <text x="850" y="78" text-anchor="end" fill="#C4862B" font-size="11" letter-spacing="0.2em" font-family="Inter, Arial, sans-serif">HOW TO STYLE GREY HAIR</text>
+        <text x="422" y="170" fill="#1A1814" font-size="11" letter-spacing="0.2em" font-family="Inter, Arial, sans-serif">THE SHIFT</text>
+      </svg>
+    </div>
+    <p class="search-copy">This is where we are going.<br /><em>Style over fear. Always.</em></p>
+  </section>
+
+  <section class="close-sec" id="closeSec">
+    <div class="close-wrap">
+      <p class="close-line">My father has been fighting his hair for 16 years.</p>
+      <p class="close-line">My cousin spent six months buying solutions to a problem he had been convinced he had.</p>
+      <p class="close-line">My girlfriend's father looks like a film director and does not know it.</p>
+      <p class="close-main">I built AIRN'D for all three of them.</p>
+      <p class="close-sub">But mostly for Arjun.</p>
+      <p class="close-tag">BECAUSE NOBODY SHOULD SPEND SIX MONTHS FIGHTING SOMETHING THAT WAS NEVER A FIGHT TO BEGIN WITH.</p>
+    </div>
+  </section>
+
+  <footer class="footer-last">
+    <p class="caps">THAT IS WHY WE STARTED.</p>
+    <a class="footer-link" href="what-is-airnd.html">
+      <svg viewBox="0 0 46 18" width="46" height="18" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <path d="M2 9H40" stroke="#C4862B" stroke-width="1.4" stroke-linecap="round"/>
+        <path d="M31 2.3C35 4.8 37.7 6.9 40 9" stroke="#C4862B" stroke-width="1.4" stroke-linecap="round"/>
+        <path d="M31 15.7C35 13.2 37.7 11.1 40 9" stroke="#C4862B" stroke-width="1.4" stroke-linecap="round"/>
+      </svg>
+      <span>WHAT IS AIRN'D</span>
+    </a>
+  </footer>
+
+  <script>
+    const hero = document.getElementById('numberOpen');
+    const nav = document.getElementById('siteNav');
+    const openLines = document.getElementById('openLines');
+    const openLine1 = document.getElementById('openLine1');
+    const openLine2 = document.getElementById('openLine2');
+
+    const navObserver = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        nav.classList.toggle('light', !entry.isIntersecting);
+      });
+    }, { threshold: 0.2 });
+    navObserver.observe(hero);
+
+    function revealWords(target, sentence, startDelay) {
+      const words = sentence.split(' ');
+      target.innerHTML = words.map((w) => `<span class="word">${w}</span>`).join(' ');
+      const spans = [...target.querySelectorAll('.word')];
+      spans.forEach((span, i) => {
+        setTimeout(() => span.classList.add('show'), startDelay + (i * 300));
+      });
+      return startDelay + (words.length * 300);
+    }
+
+    let openStarted = false;
+    const openObserver = new IntersectionObserver((entries, obs) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting || openStarted) return;
+        openStarted = true;
+        openLines.classList.add('show-block');
+        const t1 = revealWords(openLine1, 'Nobody is in the business of working with you.', 0);
+        revealWords(openLine2, 'They are all in the business of fixing you.', t1 + 400);
+        obs.unobserve(entry.target);
+      });
+    }, { threshold: 0.35 });
+    openObserver.observe(openLines);
+
+    const blocks = [...document.querySelectorAll('.letter-block')];
+    const letterObserver = new IntersectionObserver((entries, obs) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        const idx = Number(entry.target.dataset.i || 0);
+        setTimeout(() => entry.target.classList.add('show'), idx * 150);
+        obs.unobserve(entry.target);
+      });
+    }, { threshold: 0.25, rootMargin: '0px 0px -10% 0px' });
+    blocks.forEach((b, i) => {
+      b.dataset.i = String(i);
+      letterObserver.observe(b);
+    });
+
+    const airndMark = document.getElementById('airndMark');
+    const mapObserver = new IntersectionObserver((entries, obs) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        setTimeout(() => {
+          airndMark.style.opacity = '1';
+          airndMark.style.transition = 'opacity 0.8s ease-out';
+        }, 1200);
+        obs.unobserve(entry.target);
+      });
+    }, { threshold: 0.3 });
+    mapObserver.observe(document.getElementById('mapSec'));
+
+    const closeSec = document.getElementById('closeSec');
+    const closeLines = [...document.querySelectorAll('.close-line')];
+    const closeMain = document.querySelector('.close-main');
+    const closeSub = document.querySelector('.close-sub');
+    const closeTag = document.querySelector('.close-tag');
+
+    const closeObserver = new IntersectionObserver((entries, obs) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        closeLines.forEach((line, i) => {
+          setTimeout(() => line.classList.add('show'), i * 200);
+        });
+        setTimeout(() => {
+          closeMain.style.opacity = '1';
+          closeMain.style.transform = 'translateY(0)';
+        }, 1100);
+        setTimeout(() => {
+          closeSub.style.opacity = '1';
+          closeSub.style.transform = 'translateY(0)';
+        }, 1600);
+        setTimeout(() => {
+          closeTag.style.opacity = '1';
+          closeTag.style.transform = 'translateY(0)';
+        }, 2400);
+        obs.unobserve(entry.target);
+      });
+    }, { threshold: 0.4 });
+    closeObserver.observe(closeSec);
+  </script>
+</body>
+</html>
+
