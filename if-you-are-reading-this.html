@@ -1,0 +1,347 @@
+﻿<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AIRN'D - IF YOU ARE READING THIS</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,700;1,300&family=Inter:wght@300;400;500;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --near-black: #1A1814;
+      --raw-silver: #A8A39D;
+      --amber: #C4862B;
+      --paper: #F2EDE6;
+      --head: "Cormorant Garamond", "Times New Roman", serif;
+      --body: "Neue Haas Grotesk Text Pro", "Neue Haas Grotesk Display Pro", "Inter", "Arial", sans-serif;
+      --track: 0.2em;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; border-radius: 0; box-shadow: none; }
+    html, body { background: var(--near-black); color: var(--paper); font-family: var(--body); }
+
+    .site-nav {
+      position: fixed;
+      inset: 0 0 auto 0;
+      z-index: 60;
+      padding: 1.1rem 2.4rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      color: var(--paper);
+      background: transparent;
+      opacity: 0;
+      transition: opacity 0.8s ease-out, background-color 0.4s ease-out, color 0.4s ease-out;
+      pointer-events: none;
+    }
+    .site-nav.ready { opacity: 1; pointer-events: auto; }
+    .site-nav.light { background: var(--paper); color: var(--near-black); }
+    .wordmark { font-family: var(--head); font-weight: 700; font-size: 24px; color: inherit; text-decoration: none; }
+    .nav-links { list-style: none; display: flex; gap: 1.2rem; }
+    .nav-links a {
+      color: inherit;
+      text-decoration: none;
+      text-transform: uppercase;
+      letter-spacing: var(--track);
+      font-size: 11px;
+      transition: letter-spacing 0.3s ease-out;
+      white-space: nowrap;
+    }
+    .nav-links a:hover { letter-spacing: calc(var(--track) + 1px); }
+
+    section { position: relative; width: 100%; overflow: clip; }
+
+    .caps { text-transform: uppercase; letter-spacing: var(--track); font-size: 11px; }
+
+    .envelope {
+      min-height: 100vh;
+      background: var(--near-black);
+      display: grid;
+      place-items: center;
+      text-align: center;
+      padding: 18vh 1.25rem 10vh;
+    }
+    .env-line {
+      color: var(--raw-silver);
+      opacity: 0;
+      transition: opacity 1s ease-out;
+    }
+    .env-line + .env-line { margin-top: 0.7rem; }
+    .env-line.show { opacity: 1; }
+
+    .hero-arrow {
+      position: absolute;
+      bottom: 2.2rem;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 40px;
+      height: 56px;
+      opacity: 0;
+      transition: opacity 0.8s ease-out;
+      animation: breathe 2s ease-out infinite;
+      transform-origin: center;
+    }
+    .hero-arrow.show { opacity: 1; }
+    @keyframes breathe {
+      0%, 100% { transform: translateX(-50%) scale(1); }
+      50% { transform: translateX(-50%) scale(1.05); }
+    }
+
+    .letter {
+      background: var(--near-black);
+      padding: 8vh 1.25rem 6vh;
+    }
+    .letter-wrap {
+      max-width: 640px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 1.4rem;
+    }
+    .block {
+      opacity: 0;
+      transition: opacity 0.9s ease-out;
+    }
+    .block.show { opacity: 1; }
+
+    .date-line,
+    .section-label,
+    .signature-meta { color: var(--raw-silver); }
+
+    .body-copy {
+      font-size: clamp(1rem, 2.8vw, 17px);
+      color: var(--paper);
+      line-height: 2;
+    }
+
+    .pull {
+      border-left: 2px solid var(--amber);
+      padding-left: 1.5rem;
+      font-family: var(--head);
+      font-style: italic;
+      font-size: clamp(1.25rem, 4.3vw, 28px);
+      line-height: 1.6;
+      color: var(--raw-silver);
+    }
+
+    .rule {
+      border-top: 0.5px solid var(--raw-silver);
+      width: 100%;
+      margin-bottom: 2rem;
+    }
+
+    .signal-box {
+      background: var(--paper);
+      padding: 2rem;
+      margin: 2rem 0;
+    }
+    .signal-kicker {
+      color: var(--near-black);
+      margin-bottom: 1rem;
+    }
+    .signal-title {
+      font-family: var(--head);
+      font-size: clamp(1.8rem, 5.4vw, 36px);
+      color: var(--near-black);
+      font-weight: 700;
+      line-height: 1.5;
+    }
+    .signal-copy {
+      margin-top: 1rem;
+      font-size: 15px;
+      color: var(--raw-silver);
+      line-height: 1.9;
+    }
+
+    .quote-line {
+      font-family: var(--head);
+      font-style: italic;
+      font-size: clamp(1.3rem, 4vw, 24px);
+      color: var(--raw-silver);
+      line-height: 2;
+      opacity: 0;
+      transition: opacity 0.9s ease-out;
+    }
+    .quote-line.show { opacity: 1; }
+
+    .closer {
+      font-family: var(--head);
+      font-size: clamp(2rem, 7vw, 48px);
+      color: var(--paper);
+      font-weight: 300;
+      line-height: 1.4;
+    }
+
+    .signature { margin-top: 4rem; }
+    .signature-name {
+      font-family: var(--head);
+      font-style: italic;
+      font-size: 22px;
+      color: var(--raw-silver);
+      line-height: 1.3;
+    }
+    .signature-meta { margin-top: 0.5rem; }
+
+    .twist {
+      min-height: 100vh;
+      background: var(--near-black);
+      display: grid;
+      place-items: center;
+      text-align: center;
+      padding: 10vh 1.25rem;
+    }
+    .twist-line {
+      opacity: 0;
+      transition: opacity 1.2s ease-out;
+      color: var(--raw-silver);
+    }
+    .twist-line.show { opacity: 1; }
+
+    @media (max-width: 900px) {
+      .site-nav { padding: 0.9rem 1rem; }
+      .nav-links { gap: 0.7rem; }
+    }
+    @media (max-width: 760px) {
+      .site-nav { flex-direction: column; gap: 0.55rem; }
+      .nav-links { flex-wrap: wrap; justify-content: center; }
+      .signal-box { padding: 1.4rem; }
+    }
+  </style>
+</head>
+<body>
+  <svg width="0" height="0" aria-hidden="true" focusable="false" style="position:absolute;left:-9999px;overflow:hidden;">
+    <filter id="paperGrain">
+      <feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="2" stitchTiles="stitch" />
+      <feColorMatrix type="saturate" values="0" />
+      <feComponentTransfer>
+        <feFuncA type="table" tableValues="0 0.12" />
+      </feComponentTransfer>
+    </filter>
+  </svg>
+
+  <nav class="site-nav" id="siteNav">
+    <a class="wordmark" href="index.html">AIRN'D</a>
+    <ul class="nav-links">
+      <li><a href="why-we-started.html">WHY WE STARTED</a></li>
+      <li><a href="what-is-airnd.html">WHAT IS AIRN'D</a></li>
+      <li><a href="how-we-spend-year-one.html">INVESTOR RELATIONS</a></li>
+      <li><a href="if-you-are-reading-this.html">IF YOU ARE READING THIS</a></li>
+    </ul>
+  </nav>
+
+  <section class="envelope" id="envelope">
+    <div>
+      <p class="env-line caps" id="env1">AIRN'D — PRIVATE CORRESPONDENCE</p>
+      <p class="env-line caps" id="env2">TO BE READ ONLY IF NECESSARY</p>
+    </div>
+    <svg class="hero-arrow" id="envArrow" viewBox="0 0 42 58" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <path d="M20.8 4.5V46.2" stroke="#A8A39D" stroke-width="1.4" stroke-linecap="round"/>
+      <path d="M9.5 35.8C14.4 39.5 17.7 43 20.8 46.2" stroke="#A8A39D" stroke-width="1.4" stroke-linecap="round"/>
+      <path d="M32.1 35.8C27.2 39.5 23.9 43 20.8 46.2" stroke="#A8A39D" stroke-width="1.4" stroke-linecap="round"/>
+    </svg>
+  </section>
+
+  <section class="letter" id="letter">
+    <div class="letter-wrap">
+      <p class="date-line caps block">DAY ONE. 2024.</p>
+      <p class="body-copy block">If you are reading this, AIRN'D did not make it.</p>
+      <p class="body-copy block">Not because the idea was wrong. The idea was never wrong.</p>
+      <p class="body-copy block">But somewhere between the vision and the execution, something broke. Either we did not catch it in time. Or we caught it and did not act on it.</p>
+      <p class="pull block">Either way, you are reading this. Which means we owe you an honest account of what we said we would watch for.</p>
+
+      <div class="block" style="margin-top:3rem;">
+        <p class="section-label caps">THE SIGNAL</p>
+        <div class="rule"></div>
+      </div>
+
+      <p class="body-copy block">We made one cultural bet. Not a product bet. A cultural bet.</p>
+      <p class="body-copy block">The bet was that Indian men are ready to stop seeing grey and thinning as something to be ashamed of. That the shame is dissolving. That ownership is replacing embarrassment.</p>
+      <p class="body-copy block">The kill signal was designed to tell us whether that shift was real or whether we arrived too early.</p>
+
+      <div class="signal-box block">
+        <p class="signal-kicker caps">THE SIGNAL</p>
+        <p class="signal-title">Are men gifting AIRN'D to other men.</p>
+        <p class="signal-copy">A man who gifts The Silver to his father is saying two things at once. I think this product is worth using. And I am comfortable telling the man I love that his grey looks good and he should own it rather than hide it. That is the cultural shift made physical.</p>
+      </div>
+
+      <p class="body-copy block">If nobody is gifting AIRN'D by month six, it means men are still buying it privately. Quietly. Almost secretly. The product is being used but the shame is still there underneath. They like what it does but they are not yet proud enough of what it means to hand it to someone they love.</p>
+      <p class="body-copy block">That is not a marketing problem. That is a timing problem. We arrived before the shift happened.</p>
+
+      <div class="block" style="margin-top:3rem;">
+        <p class="section-label caps">WHAT WE WILL NOT DO</p>
+        <div class="rule"></div>
+      </div>
+
+      <div class="block" id="quoteGroup">
+        <p class="quote-line" data-delay="0">We will not blame the market.</p>
+        <p class="quote-line" data-delay="150">We will not say India is not ready.</p>
+        <p class="quote-line" data-delay="300">We will not say we needed more time.</p>
+        <p class="quote-line" data-delay="450">We will not say the product was good but the marketing failed.</p>
+      </div>
+
+      <p class="body-copy block" style="margin-top:1rem;">If the signal is absent at month six, the product and the marketing are the same thing. We built both. We own both.</p>
+
+      <div class="block" style="margin-top:3rem;">
+        <p class="section-label caps">THE CLOSE</p>
+        <div class="rule"></div>
+      </div>
+
+      <p class="body-copy block">The best founders we know are not the ones who never failed.</p>
+      <p class="closer block">They are the ones who knew exactly when to stop.</p>
+
+      <div class="signature block">
+        <p class="signature-name">AIRN'D</p>
+        <p class="signature-meta caps">FOUNDED 2024</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="twist" id="twist">
+    <p class="twist-line caps" id="twistLine">WRITTEN DAY ONE. YOU ARE READING THIS TOO EARLY.</p>
+  </section>
+
+  <script>
+    const nav = document.getElementById('siteNav');
+    setTimeout(() => nav.classList.add('ready'), 3000);
+
+    setTimeout(() => document.getElementById('env1').classList.add('show'), 800);
+    setTimeout(() => document.getElementById('env2').classList.add('show'), 1800);
+    setTimeout(() => document.getElementById('envArrow').classList.add('show'), 3000);
+
+    const blocks = [...document.querySelectorAll('.letter .block')];
+    const quoteGroup = document.getElementById('quoteGroup');
+
+    const blockObserver = new IntersectionObserver((entries, obs) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        const idx = Number(entry.target.dataset.i || 0);
+        setTimeout(() => {
+          entry.target.classList.add('show');
+          if (entry.target === quoteGroup) {
+            [...quoteGroup.querySelectorAll('.quote-line')].forEach((line) => {
+              const d = Number(line.dataset.delay || 0);
+              setTimeout(() => line.classList.add('show'), d);
+            });
+          }
+        }, idx * 300);
+        obs.unobserve(entry.target);
+      });
+    }, { threshold: 0.2, rootMargin: '0px 0px -8% 0px' });
+
+    blocks.forEach((block, i) => {
+      block.dataset.i = String(i);
+      blockObserver.observe(block);
+    });
+
+    const twistObserver = new IntersectionObserver((entries, obs) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        document.getElementById('twistLine').classList.add('show');
+        obs.unobserve(entry.target);
+      });
+    }, { threshold: 0.45 });
+    twistObserver.observe(document.getElementById('twist'));
+  </script>
+</body>
+</html>
