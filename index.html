@@ -272,6 +272,14 @@
       position: relative;
       aspect-ratio: 3 / 4;
       background: #2A2520;
+      overflow: hidden;
+    }
+
+    .ph img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
     }
 
     .ph::after {
@@ -455,16 +463,16 @@
   <section class="images" id="images">
     <div class="images-grid">
       <article class="image-card">
-        <div class="ph"></div>
-        <!-- <p class="caps-label" style="color:#A8A39D;">SALT AND PEPPER, DELHI, 2024</p> -->
+        <div class="ph"><img src="1.png" alt="Salt and pepper, Delhi, 2024" /></div>
+        <p class="caps-label" style="color:#A8A39D;">SALT AND PEPPER, DELHI, 2024</p>
       </article>
       <article class="image-card">
-        <div class="ph"></div>
-        <!-- <p class="caps-label" style="color:#A8A39D;">TEMPLE LIGHT, MUMBAI, 2024</p> -->
+        <div class="ph"><img src="2.png" alt="Temple light, Mumbai, 2024" /></div>
+        <p class="caps-label" style="color:#A8A39D;">TEMPLE LIGHT, MUMBAI, 2024</p>
       </article>
       <article class="image-card">
-        <div class="ph"></div>
-        <!-- <p class="caps-label" style="color:#A8A39D;">WORN IN, FLORENCE, 1978</p> -->
+        <div class="ph"><img src="3.png" alt="Worn in, Florence, 1978" /></div>
+        <p class="caps-label" style="color:#A8A39D;">WORN IN, FLORENCE, 1978</p>
       </article>
     </div>
   </section>
